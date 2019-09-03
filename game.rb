@@ -1,6 +1,8 @@
 require_relative 'cell'
 require 'tty-table'
 require 'tty-box'
+require 'terminal-table'
+
 #Prepare
 # #         1  2  3  4  5  6  7  8  9
 # cell_values = [ [0, 3, 0, 0, 0, 7, 1, 0, 0],# 1
@@ -101,17 +103,38 @@ end
 
 #display the cells
 def display_sudoku
-  table = TTY::Table.new ['header1','header2'], [['a1', 'a2'], ['b1', 'b2']]
-  box = TTY::Box.frame(
-  width: 30,
-  height: 10,
-  align: :center,
-  padding: 3,
-  border: :thick,
-  title: {top_left: 'Sudoku', bottom_right: 'Programmer Jack'}
-  ) do
-  table.render(:ascii)
+
+  table = TTY::Table.new
+  CELLS.each do |row|
+    table << [{value: row[0].value, alignment: :center}, {value: row[1].value, alignment: :center}, 
+    {value: row[2].value, alignment: :center}, {value: row[3].value, alignment: :center}, {value: row[4].value, alignment: :center}, {value: row[5].value, alignment: :center}, {value: row[6].value, alignment: :center}, 
+    {value: row[7].value, alignment: :center}, {value: row[8].value, alignment: :center}]
   end
+  
+  # box = TTY::Box.frame(
+  # width: 100,
+  # height: 40,
+  # align: :left,
+  # padding: 1,
+  # border: :thick,
+  # title: {top_left: 'Sudoku', bottom_right: 'Programmer Jack'}
+  # ) do
+  # table.render :ascii, width: 95, height: 95, alight: :center, resize: true, padding: [1,1,1,1]
+  # end
+ 
+  box = TTY::Box.frame(
+    width: 21,
+    height: 13,
+    align: :left,
+    padding: 1,
+    border: :thick,
+    title: {top_left: 'Sudoku', bottom_right: 'Programmer Jack'}
+    ) do
+    table.render(:basic, alignments: [:center, :center]) do |renderer|
+      renderer.border.style = :green
+    end
+  end
+  puts box
 end
 
 #solve the sudoku
@@ -141,13 +164,13 @@ while !is_solved()
 end
 puts "##############Total Round #{counter}#############"
 
-CELLS.each do |row|
-  row.each do |cell|
-    puts cell.to_s
-    p cell.potential_value_stack
-    p "..............."
-  end
-  puts
-end
-
+# CELLS.each do |row|
+#   row.each do |cell|
+#     puts cell.to_s
+#     p cell.potential_value_stack
+#     p "..............."
+#   end
+#   puts
+# end
+puts `clear`
 display_sudoku
