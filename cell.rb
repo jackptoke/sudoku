@@ -2,9 +2,9 @@ class Cell
   #representing a cell on a sudoku table
   
   #once initiated the row and column remained unchanged
-  attr_reader :row, :column, :vertical_family, :horizontal_family, :block_family
+  attr_reader :row, :column, :value, :vertical_family, :horizontal_family, :block_family
   #value can be changed
-  attr_accessor :value, :prospect_value_stack
+  attr_accessor :potential_value_stack
 
   def initialize(row, column, value)
     @row = row
@@ -13,7 +13,14 @@ class Cell
     @horizontal_family = [] #all the cells in a row that the cell belong to
     @block_family = [] #all the cells in the same block the cell belong to
     @value = value #value of the cell
-    @prospect_value_stack = [] #all the potential value it could have
+    @potential_value_stack = [] #all the potential value it could have
+    
+    #whether or not the value is permissible to change
+    if value > 0 && value <= 9
+      @fixed = true
+    else
+      @fixed = false
+    end
 
     #initializing the value of the vertical family
     for r in (0..8)
@@ -33,6 +40,21 @@ class Cell
     get_block_family()
   end
 
+  #change the value of the cell
+  def value=(v)
+    if !@fixed
+      @value = v
+    end
+  end
+
+  #Is the number changeable
+  def is_fixed
+    return @fixed
+  end
+
+  def to_s
+    return "[#{@row}, #{@column}, #{@value}]"
+  end
   #get block family
   private
   def get_block_family()
@@ -107,6 +129,7 @@ end
 # p a.block_family
 # p a.vertical_family
 # p a.horizontal_family
+# p a.to_s
 
 # p ".........................................."
 
