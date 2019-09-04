@@ -1,3 +1,5 @@
+require 'artii'
+
 module GUI
 
   def display_option1
@@ -24,4 +26,18 @@ module GUI
     input_values = gets.strip.split(' ').map {|val| val.to_i}
     return input_values
   end
+  
+  def congratulate
+    a = Artii::Base.new :font => 'slant'
+    puts a.asciify('Congratulation!!')
+  end
 end
+
+class Test
+  include GUI
+  def initialize()
+  end
+end
+
+t = Test.new
+t.congratulate
