@@ -10,6 +10,24 @@ class BadFileFormatException < StandardError
 end 
 
 module FileManipulator
+  def split_and_save_datas(datas)
+    count = 1
+    datas.each do |game_data|
+      filename = "intermediate-game-#{count}.csv"
+      begin
+        File.open(filename, "w") {|f|
+          game_data.each do |row|
+            str = row.to_s.gsub(/[ ]/, '').delete "[]"
+            f.puts str           
+          end
+        }
+      rescue StandardError => e 
+        puts e.message  
+        puts e.backtrace.inspect  
+      end
+      count += 1
+    end
+  end
 
   #Load a sudoku from a File
   #return the content in 2D array
@@ -40,7 +58,7 @@ module FileManipulator
       File.open(filename, 'r').each do |line|
         str = line.strip.split(',')[0]
         str.gsub!(/[.]/,'0')
-        puts str
+        # puts str
         game = []
         i = 0
         if str.size > 81
@@ -50,7 +68,7 @@ module FileManipulator
           row = []
           c = 0
           while c < 9
-            row << str[i]
+            row << str[i].to_i
             c += 1
             i += 1
           end
@@ -86,6 +104,8 @@ module FileManipulator
     end
     return true
   end
+
+
 end
 
 class Test
@@ -95,12 +115,14 @@ class Test
 end
 
 test = Test.new()
-games = test.load_batch_sudokus_from_file('easy-sudokus.csv')
-games.each do |game|
-  game.each do |row|
-    p row
-  end
-  puts "End"
-end
+games = test.load_batch_sudokus_from_file('intermediate-sudoku.csv')
+test.split_and_save_datas(games)
+
+# games.each do |game|
+#   game.each do |row|
+#     p row
+#   end
+#   puts "End"
+# end
 # p test.load_sudoku_from_file("sudoku1.csv")
 # p test.load_sudoku_from_file("sudoku2.csv")
