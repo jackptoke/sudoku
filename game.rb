@@ -1,8 +1,12 @@
 require_relative 'cell'
 require 'terminal-table'
 require_relative 'file_manipulator'
+require 'colorize'
+require 'colorized_string'
+require_relative 'GUI'
 
 include FileManipulator
+include GUI
 
 #loading datas from files
 cell_values1 = FileManipulator.load_sudoku_from_file("sudoku1.csv")
@@ -130,45 +134,26 @@ def prepare_sudoku_cells(sudoku_datas)
   sudoku_cells
 end
 
-#keep shedding the potential value list until the sudoku is solved
-
-# result = solve_a_sudoku(cell_values1, CELLS)
-# display_sudoku(result, "Solved by Sudoku Solver (written in Ruby)")
-
-# result = solve_a_sudoku(cell_values2)
-# display_sudoku(result, "Solved by Sudoku Solver (programmed by Jack Toke)")
-# if solve_a_sudoku(cell_values2, CELLS)
-#   display_sudoku(CELLS)
-# end
-
 def user_interface
   play = true
   files = ['sudoku1.csv', 'sudoku2.csv']
   progress = 0  #keeping track of the game
 
-  print 'Welcome to '
+  #print 'Welcome to '
   until play != true do
-    puts "Sudoku Master"
-    puts '1. I\'m up for a sudoku challenge'
-    puts '2. Solve a sudoku from a csv file'
-    puts '9. Exit'
-    print 'Enter your option number: '
-    input = gets.strip
+    
+    input = GUI.display_option1
 
     if input == '1'
       #play game
       sudoku_datas = FileManipulator.load_sudoku_from_file(files[progress])
       sudoku_cells = prepare_sudoku_cells(sudoku_datas)
-      #display_sudoku(sudoku_cells, "Sudoku Challenge ##{progress+1}")
+      
       solution = solve_a_sudoku(sudoku_datas)
       while !is_solved(sudoku_cells)
         # puts `clear`
         display_sudoku(sudoku_cells, "Sudoku Challenge ##{progress+1}")
-        puts "To enter a value for a cell follow the format. (row col value)"
-        puts "E.g. to enter the value of 9 to the cell on row 6 and column 5, you enter: 6 5 9"
-        puts "Or enter: 0 0 0 if you give up."
-        print 'Enter cell value: '
-        input_values = gets.strip.split(' ').map {|val| val.to_i}
+        input_values = GUI.cell_input_display #gets.strip.split(' ').map {|val| val.to_i}
         if !(input_values.grep_v(1..9).size > 0 || input_values.size != 3)
 
           sudoku_cells[input_values[0] - 1][input_values[1] - 1].value = input_values[-1].to_i
