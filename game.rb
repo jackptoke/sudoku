@@ -137,6 +137,7 @@ end
 def user_interface
   play = true
   files = ['sudoku1.csv', 'sudoku2.csv']
+  batch_file = 'easy-sudokus.csv'
   progress = 0  #keeping track of the game
 
   #print 'Welcome to '
@@ -165,7 +166,8 @@ def user_interface
         end
       end
       if is_solved(sudoku_cells)
-        puts "CONGRATULATION, YOU'VE SOLVED THIS SUDOKU CHALLENGE!!!"
+        GUI.congratulate
+        puts 'You have successfully completed your challenge.'
       end
       progress += 1
     elsif input == '2'

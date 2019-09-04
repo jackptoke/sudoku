@@ -33,11 +33,11 @@ module GUI
   end
 end
 
-class Test
-  include GUI
-  def initialize()
-  end
-end
+# class Test
+#   include GUI
+#   def initialize()
+#   end
+# end
 
-t = Test.new
-t.congratulate
+# t = Test.new
+# t.congratulate
