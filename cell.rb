@@ -16,7 +16,7 @@ class Cell
     @potential_value_stack = [] #all the potential value it could have
     
     #whether or not the value is permissible to change
-    if value > 0 && value <= 9
+    if value.to_i > 0 && value.to_i <= 9
       @fixed = true
     else
       @fixed = false
@@ -42,9 +42,11 @@ class Cell
 
   #change the value of the cell
   def value=(v)
-    if !@fixed
+    if !@fixed && (v <= 9 && v > 0)
       @value = v
-    end
+      return true
+    end 
+    return false
   end
 
   #Is the number changeable

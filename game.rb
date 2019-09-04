@@ -3,51 +3,14 @@ require 'terminal-table'
 require_relative 'file_manipulator'
 
 include FileManipulator
-#Prepare
-# #         1  2  3  4  5  6  7  8  9
-# cell_values = [ [0, 3, 0, 0, 0, 7, 1, 0, 0],# 1
-#                 [0, 0, 0, 0, 2, 0, 4, 0, 0],# 2
-#                 [2, 0, 8, 0, 0, 0, 7, 9, 6],# 3
-#                 [8, 0, 0, 0, 4, 9, 0, 5, 7],# 4
-#                 [3, 7, 9, 5, 0, 1, 0, 0, 0],# 5
-#                 [0, 0, 0, 7, 6, 3, 0, 0, 0],# 6
-#                 [0, 2, 0, 0, 5, 0, 0, 6, 3],# 7
-#                 [0, 6, 4, 0, 3, 0, 0, 0, 9],# 8
-#                 [5, 0, 0, 0, 0, 0, 0, 0, 4]]# 9
 
-#                1  2  3  4  5  6  7  8  9
-cell_values = [ [1, 0, 0, 0, 0, 0, 8, 0, 2],# 1
-                [0, 0, 9, 0, 2, 8, 4, 0, 0],# 2
-                [0, 0, 0, 0, 6, 7, 9, 0, 0],# 3
-                [0, 0, 1, 6, 0, 4, 2, 5, 3],# 4
-                [0, 0, 0, 7, 3, 0, 1, 0, 0],# 5
-                [0, 9, 0, 2, 8, 0, 0, 0, 0],# 6
-                [3, 6, 0, 8, 0, 0, 5, 4, 1],# 7
-                [4, 0, 0, 0, 0, 2, 6, 9, 8],# 8
-                [9, 0, 5, 0, 1, 0, 0, 0, 0]]# 9
-
-CELLS = []
-
-cell_values.each_with_index do |row, index_r|
-  cell_row = []
-  row.each_with_index do |value, index_c|
-    cell_row << Cell.new(index_r, index_c, value)
-  end
-  CELLS << cell_row
-end
-
-# cells.each do |row|
-#   row.each do |cell|
-#     puts cell.to_s
-#     p cell.vertical_family
-#     p cell.horizontal_family
-#   end
-#   puts
-# end
+#loading datas from files
+cell_values1 = FileManipulator.load_sudoku_from_file("sudoku1.csv")
+cell_values2 = FileManipulator.load_sudoku_from_file("sudoku2.csv")
 
 #build the possible values of each cell
-def build_potential_value_list
-  CELLS.each do |row|
+def build_potential_value_list(cells)
+  cells.each do |row|
     row.each do |cell|
       #all cell except the fixed one
       if !cell.is_fixed
@@ -55,13 +18,13 @@ def build_potential_value_list
         
         #for each cell in the vertical
         cell.vertical_family.each do |c|
-          cell.potential_value_stack.delete_if {|value| value == CELLS[c[0]][c[1]].value}
+          cell.potential_value_stack.delete_if {|value| value == cells[c[0]][c[1]].value}
         end
         cell.horizontal_family.each do |c|
-          cell.potential_value_stack.delete_if {|value| value == CELLS[c[0]][c[1]].value}
+          cell.potential_value_stack.delete_if {|value| value == cells[c[0]][c[1]].value}
         end
         cell.block_family.each do |c|
-          cell.potential_value_stack.delete_if {|value| value == CELLS[c[0]][c[1]].value}
+          cell.potential_value_stack.delete_if {|value| value == cells[c[0]][c[1]].value}
         end
       end
     end
@@ -69,20 +32,20 @@ def build_potential_value_list
 end
 
 #shed 
-def shed_potential_value_list
-  CELLS.each do |row|
+def shed_potential_value_list(cells)
+  cells.each do |row|
     row.each do |cell|
       #all cell except the fixed one
       if !cell.is_fixed
         #for each cell in the vertical
         cell.vertical_family.each do |c|
-          cell.potential_value_stack.delete_if {|value| value == CELLS[c[0]][c[1]].value}
+          cell.potential_value_stack.delete_if {|value| value == cells[c[0]][c[1]].value}
         end
         cell.horizontal_family.each do |c|
-          cell.potential_value_stack.delete_if {|value| value == CELLS[c[0]][c[1]].value}
+          cell.potential_value_stack.delete_if {|value| value == cells[c[0]][c[1]].value}
         end
         cell.block_family.each do |c|
-          cell.potential_value_stack.delete_if {|value| value == CELLS[c[0]][c[1]].value}
+          cell.potential_value_stack.delete_if {|value| value == cells[c[0]][c[1]].value}
         end
       end
     end
@@ -90,8 +53,8 @@ def shed_potential_value_list
 end
 
 #evaluate and update
-def update_cells
-  CELLS.each do |row|
+def update_cells(cells)
+  cells.each do |row|
     row.each do |cell|
       #all cell except the fixed one
       if (!cell.is_fixed) && cell.potential_value_stack.size == 1
@@ -102,10 +65,10 @@ def update_cells
 end
 
 #display the cells
-def display_sudoku
+def display_sudoku(cells, title)
   
   rows = []
-  CELLS.each do |row|
+  cells.each do |row|
     temp_row = []
     row.each do |cell|
       temp_row << {:value => cell.value, :alignment => :center}
@@ -113,16 +76,17 @@ def display_sudoku
     rows << temp_row
   end
 
-  table2 = Terminal::Table.new :title => "Jack Toke - Sudoku", :rows => rows, :style => {:width => 55, :all_separators => true }
+  table2 = Terminal::Table.new :title => title, :rows => rows, :style => {:width => 55, :all_separators => true }
  
   puts table2
 
 end
 
 #solve the sudoku
-def is_solved
+def is_solved(cells)
   solved = true
-  CELLS.each do |row|
+  
+  cells.each do |row|
     row.each do |cell|
       #all cell except the fixed one
       if cell.value == 0
@@ -130,29 +94,116 @@ def is_solved
       end
     end
   end
+  
   return solved
 end
 
-#build the potential list of values for each cell
-build_potential_value_list()
-update_cells  #update the value of each cell
+#The function will solve a sudoku from a given filename
+def solve_a_sudoku(sudoku_datas)
+
+  sudoku_cells = prepare_sudoku_cells(sudoku_datas)
+  #display_sudoku(sudoku_cells, "Sudoku to solve")
+  #build the potential list of values for each cell
+  build_potential_value_list(sudoku_cells)
+  update_cells(sudoku_cells)  #update the value of each cell
+  counter = 0
+  #continue to the try to solve
+  #if the counter goes beyond a million
+  #it's probably a bad sudoku
+  while !is_solved(sudoku_cells) # 
+    shed_potential_value_list(sudoku_cells)
+    update_cells(sudoku_cells)
+    counter += 1
+  end
+  return sudoku_cells
+end
+
+def prepare_sudoku_cells(sudoku_datas)
+  sudoku_cells = []
+  sudoku_datas.each_with_index do |row, index_r|
+    cell_row = []
+    row.each_with_index do |value, index_c|
+      cell_row << Cell.new(index_r, index_c, value)
+    end
+    sudoku_cells << cell_row
+  end
+  sudoku_cells
+end
 
 #keep shedding the potential value list until the sudoku is solved
-counter = 0
-while !is_solved()  
-  shed_potential_value_list
-  update_cells
-  counter += 1
-end
-puts "##############Total Round #{counter}#############"
 
-# CELLS.each do |row|
-#   row.each do |cell|
-#     puts cell.to_s
-#     p cell.potential_value_stack
-#     p "..............."
-#   end
-#   puts
+# result = solve_a_sudoku(cell_values1, CELLS)
+# display_sudoku(result, "Solved by Sudoku Solver (written in Ruby)")
+
+# result = solve_a_sudoku(cell_values2)
+# display_sudoku(result, "Solved by Sudoku Solver (programmed by Jack Toke)")
+# if solve_a_sudoku(cell_values2, CELLS)
+#   display_sudoku(CELLS)
 # end
-puts `clear`
-display_sudoku
+
+def user_interface
+  play = true
+  files = ['sudoku1.csv', 'sudoku2.csv']
+  progress = 0  #keeping track of the game
+
+  print 'Welcome to '
+  until play != true do
+    puts "Sudoku Master"
+    puts '1. I\'m up for a sudoku challenge'
+    puts '2. Solve a sudoku from a csv file'
+    puts '9. Exit'
+    print 'Enter your option number: '
+    input = gets.strip
+
+    if input == '1'
+      #play game
+      sudoku_datas = FileManipulator.load_sudoku_from_file(files[progress])
+      sudoku_cells = prepare_sudoku_cells(sudoku_datas)
+      #display_sudoku(sudoku_cells, "Sudoku Challenge ##{progress+1}")
+      solution = solve_a_sudoku(sudoku_datas)
+      while !is_solved(sudoku_cells)
+        # puts `clear`
+        display_sudoku(sudoku_cells, "Sudoku Challenge ##{progress+1}")
+        puts "To enter a value for a cell follow the format. (row col value)"
+        puts "E.g. to enter the value of 9 to the cell on row 6 and column 5, you enter: 6 5 9"
+        puts "Or enter: 0 0 0 if you give up."
+        print 'Enter cell value: '
+        input_values = gets.strip.split(' ').map {|val| val.to_i}
+        if !(input_values.grep_v(1..9).size > 0 || input_values.size != 3)
+
+          sudoku_cells[input_values[0] - 1][input_values[1] - 1].value = input_values[-1].to_i
+        elsif input_values.count(0) == 3
+          display_sudoku(solution, "Solution to Challenge ##{progress+1}")
+          break
+        else
+          puts "You've entered some invalid datas.  Try again."
+        end
+      end
+      if is_solved(sudoku_cells)
+        puts "CONGRATULATION, YOU'VE SOLVED THIS SUDOKU CHALLENGE!!!"
+      end
+      progress += 1
+    elsif input == '2'
+      #ask user for a file name
+      print 'Please, enter the csv filename: '
+      filename = gets.strip
+      if File.exist?(filename)
+        cell_values2 = FileManipulator.load_sudoku_from_file(filename)
+        #print out the solution
+        result = solve_a_sudoku(cell_values2)
+        puts `clear`
+        display_sudoku(result, "Solved by Sudoku Solver (programmed by Jack Toke)")
+      else
+        puts 'Invalid filename.  Please, try again later.'
+      end
+      
+    elsif input == '9'
+      #quit
+      play = false
+    else
+      puts "We don't offer any other option.  Please, try again."
+    end
+  end
+end
+
+user_interface

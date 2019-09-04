@@ -18,7 +18,7 @@ module FileManipulator
     sudoku_game = []
     begin
       File.open(filename, 'r').each do |line|
-        sudoku_game << line.strip.split(',')
+        sudoku_game << line.strip.split(',').map{|value| value.to_i}
         if !is_soduku_format(sudoku_game[-1])
           raise BadFileFormatException.new("Incorrect file format.")
         end
