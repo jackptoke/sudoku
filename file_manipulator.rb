@@ -117,7 +117,7 @@ end
 test = Test.new()
 games = test.load_batch_sudokus_from_file('intermediate-sudoku.csv')
 test.split_and_save_datas(games)
-
+# p test.load_sudoku_from_file("intermediate-game-2.csv")
 # games.each do |game|
 #   game.each do |row|
 #     p row
