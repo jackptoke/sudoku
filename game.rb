@@ -112,10 +112,13 @@ def solve_a_sudoku(sudoku_datas)
   # continue to the try to solve
   # if the counter goes beyond a million
   # it's probably a bad sudoku
-  until solved(sudoku_cells) #
+  until solved(sudoku_cells) || counter > 1000 #
     shed_potential_value_list(sudoku_cells)
     update_cells(sudoku_cells)
     counter += 1
+  end
+  if (counter > 1000)
+    return nil
   end
   sudoku_cells
 end
@@ -191,6 +194,12 @@ def play
   sudoku_cells = prepare_sudoku_cells(sudoku_datas)
 
   solution = solve_a_sudoku(sudoku_datas)
+  if !solution
+    puts "The software is not quite ready to handle this puzzle yet."
+    puts "Either that or the puzzle is unsolvable."
+    return false
+  end
+
   until solved(sudoku_cells)
     # puts `clear`
     display_sudoku(sudoku_cells, "Sudoku Challenge ##{progress + 1}")
@@ -218,6 +227,9 @@ def solve(filename)
     # print out the solution
     result = solve_a_sudoku(cell_values2)
     puts `clear`
+    if !result
+      return false
+    end
     display_sudoku(result, 'Solved by Sudoku Solver (programmed by Jack Toke)')
   else
     puts 'Invalid filename.  Please, try again later.'
