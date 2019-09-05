@@ -70,7 +70,7 @@ end
 
 #display the cells
 def display_sudoku(cells, title)
-  
+  puts `clear`
   rows = []
   cells.each do |row|
     temp_row = []
@@ -146,62 +146,95 @@ def prepare_sudoku_cells(sudoku_datas)
 end
 
 def user_interface
-  play = true
+  go_play = true
   files = ['sudoku1.csv', 'sudoku2.csv']
   batch_file = 'easy-sudokus.csv'
   progress = 0  #keeping track of the game
 
-  #print 'Welcome to '
-  until play != true do
-    
+  until go_play != true do
+    # puts "I'm here!!"
     input = GUI.display_option1
-
     if input == '1'
-      #play game
-      sudoku_datas = FileManipulator.load_sudoku_from_file(files[progress])
-      sudoku_cells = prepare_sudoku_cells(sudoku_datas)
-      
-      solution = solve_a_sudoku(sudoku_datas)
-      while !is_solved(sudoku_cells)
-        # puts `clear`
-        display_sudoku(sudoku_cells, "Sudoku Challenge ##{progress+1}")
-        input_values = GUI.cell_input_display #gets.strip.split(' ').map {|val| val.to_i}
-        if !(input_values.grep_v(1..9).size > 0 || input_values.size != 3)
-
-          sudoku_cells[input_values[0] - 1][input_values[1] - 1].value = input_values[-1].to_i
-        elsif input_values.count(0) == 3
-          display_sudoku(solution, "Solution to Challenge ##{progress+1}")
-          break
-        else
-          puts "You've entered some invalid datas.  Try again."
-        end
-      end
-      if is_solved(sudoku_cells)
-        GUI.congratulate
-        puts 'You have successfully completed your challenge.'
-      end
+      play
       progress += 1
     elsif input == '2'
       #ask user for a file name
       print 'Please, enter the csv filename: '
-      filename = gets.strip
-      if File.exist?(filename)
-        cell_values2 = FileManipulator.load_sudoku_from_file(filename)
-        #print out the solution
-        result = solve_a_sudoku(cell_values2)
-        puts `clear`
-        display_sudoku(result, "Solved by Sudoku Solver (programmed by Jack Toke)")
-      else
-        puts 'Invalid filename.  Please, try again later.'
-      end
+      filename = STDIN.gets.strip
+      solve(filename)
       
     elsif input == '9'
       #quit
-      play = false
+      go_play = false
     else
       puts "We don't offer any other option.  Please, try again."
     end
   end
 end
 
-user_interface
+def play
+  files = ['sudoku1.csv', 'sudoku2.csv']
+  progress = 0  #keeping track of the game
+
+  #play game
+  sudoku_datas = FileManipulator.load_sudoku_from_file(files[progress])
+  sudoku_cells = prepare_sudoku_cells(sudoku_datas)
+  
+  solution = solve_a_sudoku(sudoku_datas)
+  while !is_solved(sudoku_cells)
+    # puts `clear`
+    display_sudoku(sudoku_cells, "Sudoku Challenge ##{progress+1}")
+    input_values = GUI.cell_input_display #gets.strip.split(' ').map {|val| val.to_i}
+    if !(input_values.grep_v(1..9).size > 0 || input_values.size != 3)
+
+      sudoku_cells[input_values[0] - 1][input_values[1] - 1].value = input_values[-1].to_i
+    elsif input_values.count(0) == 3
+      display_sudoku(solution, "Solution to Challenge ##{progress+1}")
+      break
+    else
+      puts "You've entered some invalid datas.  Try again."
+    end
+  end
+  if is_solved(sudoku_cells)
+    GUI.congratulate
+    puts 'You have successfully completed your challenge.'
+  end
+end
+
+def solve(filename)
+  if File.exist?(filename)
+    cell_values2 = FileManipulator.load_sudoku_from_file(filename)
+    #print out the solution
+    result = solve_a_sudoku(cell_values2)
+    puts `clear`
+    display_sudoku(result, "Solved by Sudoku Solver (programmed by Jack Toke)")
+  else
+    puts 'Invalid filename.  Please, try again later.'
+  end
+end
+
+input_array, *the_rest = ARGV
+
+if input_array == nil
+  #user_interface
+  # puts "I'm here"
+  user_interface
+elsif input_array.downcase == "play"
+  #play
+  puts "Let's play"
+  play
+elsif input_array.downcase == "solve"
+  if the_rest
+    puts "Let's solve: #{the_rest}"
+    if File.exist?(the_rest[0])
+      #call the method to solve the sudoku
+      puts "Call the Solve method here."
+      solve(the_rest[0])
+    else
+      puts "Sudoku Master couldn't find the file you've specified."
+    end
+  else
+    puts "A filename is expected. Eg. sudoku.csv"
+  end
+end
+

@@ -11,7 +11,7 @@ module GUI
     table = Terminal::Table.new :title => ColorizedString["****************Sudoku Master****************"].cyan.on_light_white, :rows => rows, :style => {:width => 50}
     puts table
     print 'Enter your option number: '
-    input = gets.strip
+    input = STDIN.gets.strip
     return input
   end
 
@@ -23,7 +23,7 @@ module GUI
     table = Terminal::Table.new :title => ColorizedString["****************Sudoku Master****************"].cyan.on_light_white, :rows => rows, :style => {:width => 100}
     puts table
     print 'Enter cell value: '
-    input_values = gets.strip.split(' ').map {|val| val.to_i}
+    input_values = STDIN.gets.strip.split(' ').map {|val| val.to_i}
     return input_values
   end
   
