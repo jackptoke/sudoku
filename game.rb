@@ -10,7 +10,6 @@ require 'pry'
 
 # include Gui
 # include FileManipulator
-
 # loading datas from files
 # cell_values1 = FileManipulator.load_sudoku_from_file("sudoku1.csv")
 # cell_values2 = FileManipulator.load_sudoku_from_file("sudoku2.csv")
@@ -74,15 +73,28 @@ end
 def display_sudoku(cells, title)
   puts `clear`
   rows = []
-  cells.each do |row|
+  #header
+  header = []
+  header << { value: " ", alignment: :center }
+  (1..(cells.size)).each do |col|
+    header << { value: "Col #{col}", alignment: :center }
+  end
+
+  #add header to the top
+  rows << header
+  temp_row = []
+
+  #add the content of the table
+  cells.each_with_index do |row, index|
     temp_row = []
+    temp_row << { value: "Row #{index + 1}", alignment: :center }
     row.each do |cell|
       temp_row << { value: cell.value, alignment: :center }
     end
     rows << temp_row
   end
 
-  table2 = Terminal::Table.new title: title, rows: rows, style: { width: 55, all_separators: true }
+  table2 = Terminal::Table.new title: title, rows: rows, style: { width: 90, all_separators: true }
 
   puts table2
 end
