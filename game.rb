@@ -122,6 +122,17 @@ def solve_a_sudoku(sudoku_datas)
   return sudoku_cells
 end
 
+#get a list of all the sudoku cells that require attention
+#they are to be shed as their values changes
+def get_focus_cells(sudoku_cells)
+
+end
+
+#
+def double_or_triple_whammer(sudoku_cells)
+
+end
+
 def prepare_sudoku_cells(sudoku_datas)
   sudoku_cells = []
   sudoku_datas.each_with_index do |row, index_r|

@@ -9,6 +9,8 @@ class BadFileFormatException < StandardError
   end
 end 
 
+#take batch data and split them into various files
+#each file containing the data for a game
 module FileManipulator
   def split_and_save_datas(datas)
     count = 1
@@ -51,6 +53,8 @@ module FileManipulator
     return sudoku_game
   end  
 
+  #the function is for loading a batch file containing many games
+  #and return the datas in it
   def load_batch_sudokus_from_file(filename)
     sudoku_game = []
     
@@ -125,4 +129,4 @@ test.split_and_save_datas(games)
 #   puts "End"
 # end
 # p test.load_sudoku_from_file("sudoku1.csv")
-# p test.load_sudoku_from_file("sudoku2.csv")
+# p test.load_sudoku_from_file("sudoku2.csv")   
