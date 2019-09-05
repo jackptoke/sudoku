@@ -77,7 +77,7 @@ def display_sudoku(cells, title)
   header = []
   header << { value: " ", alignment: :center }
   (1..(cells.size)).each do |col|
-    header << { value: "Col #{col}", alignment: :center }
+    header << { value: "Col #{col}\n\n", alignment: :center }
   end
 
   #add header to the top
@@ -87,9 +87,9 @@ def display_sudoku(cells, title)
   #add the content of the table
   cells.each_with_index do |row, index|
     temp_row = []
-    temp_row << { value: "Row #{index + 1}", alignment: :center }
+    temp_row << { value: "Row #{index + 1}\n", alignment: :center }
     row.each do |cell|
-      temp_row << { value: cell.value, alignment: :center }
+      temp_row << { value: "\n#{cell.value}", alignment: :center }
     end
     rows << temp_row
   end
@@ -214,7 +214,7 @@ def play
 
   until solved(sudoku_cells)
     # puts `clear`
-    display_sudoku(sudoku_cells, "Sudoku Challenge ##{progress + 1}")
+    display_sudoku(sudoku_cells, "Sudoku Master Challenge ##{progress + 1}")
     input_values = Gui.cell_input_display # gets.strip.split(' ').map {|val| val.to_i}
     if !(!input_values.grep_v(1..9).empty? || input_values.size != 3)
 
@@ -242,7 +242,7 @@ def solve(filename)
     if !result
       return false
     end
-    display_sudoku(result, 'Solved by Sudoku Solver (programmed by Jack Toke)')
+    display_sudoku(result, 'Solved by Sudoku Master (programmed by Jack Toke)')
   else
     puts 'Invalid filename.  Please, try again later.'
   end
