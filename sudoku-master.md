@@ -103,9 +103,6 @@ def double_or_triple_whammer(sudoku_cells)
 end
 ```
 
-###Strategy #3
-Strategy #1 and #2 are sufficient to solve most problem, but there is another strategy that could be implemented.
-
 #UI Design
 ##Key Features
 #

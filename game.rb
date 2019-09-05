@@ -5,8 +5,11 @@ require 'terminal-table'
 require_relative 'file_manipulator'
 require 'colorize'
 require 'colorized_string'
-require_relative 'GUI'
+require_relative 'gui'
 require 'pry'
+
+# include Gui
+# include FileManipulator
 
 # loading datas from files
 # cell_values1 = FileManipulator.load_sudoku_from_file("sudoku1.csv")
@@ -41,7 +44,6 @@ def shed_potential_value_list(cells)
     row.each do |cell|
       # all cell except the fixed one
       next if cell.is_fixed
-
       # for each cell in the vertical
       cell.vertical_family.each do |c|
         cell.potential_value_stack.delete_if { |value| value == cells[c[0]][c[1]].value }
@@ -86,17 +88,17 @@ def display_sudoku(cells, title)
 end
 
 # solve the sudoku
-def is_solved(cells)
-  solved = true
+def solved(cells)
+  a_flag = true
 
   cells.each do |row|
     row.each do |cell|
       # all cell except the fixed one
-      return false if cell.value == 0
+      return false if cell.value.zero?
     end
   end
 
-  solved
+  a_flag
 end
 
 # The function will solve a sudoku from a given filename
@@ -110,7 +112,7 @@ def solve_a_sudoku(sudoku_datas)
   # continue to the try to solve
   # if the counter goes beyond a million
   # it's probably a bad sudoku
-  until is_solved(sudoku_cells) #
+  until solved(sudoku_cells) #
     shed_potential_value_list(sudoku_cells)
     update_cells(sudoku_cells)
     counter += 1
@@ -155,13 +157,13 @@ end
 
 def user_interface
   go_play = true
-  files = ['sudoku1.csv', 'sudoku2.csv']
-  batch_file = 'easy-sudokus.csv'
+  # files = ['sudoku1.csv', 'sudoku2.csv']
+  # batch_file = 'easy-sudokus.csv'
   progress = 0 # keeping track of the game
 
   until go_play != true
     # puts "I'm here!!"
-    input = GUI.display_option1
+    input = Gui.display_option1
     if input == '1'
       play
       progress += 1
@@ -189,10 +191,10 @@ def play
   sudoku_cells = prepare_sudoku_cells(sudoku_datas)
 
   solution = solve_a_sudoku(sudoku_datas)
-  until is_solved(sudoku_cells)
+  until solved(sudoku_cells)
     # puts `clear`
     display_sudoku(sudoku_cells, "Sudoku Challenge ##{progress + 1}")
-    input_values = GUI.cell_input_display # gets.strip.split(' ').map {|val| val.to_i}
+    input_values = Gui.cell_input_display # gets.strip.split(' ').map {|val| val.to_i}
     if !(!input_values.grep_v(1..9).empty? || input_values.size != 3)
 
       sudoku_cells[input_values[0] - 1][input_values[1] - 1].value = input_values[-1].to_i
@@ -203,9 +205,9 @@ def play
       puts "You've entered some invalid datas.  Try again."
     end
   end
-  solved = is_solved(sudoku_cells)
-  if solved
-    GUI.congratulate
+  result = solved(sudoku_cells)
+  if result
+    Gui.congratulate
     puts 'You have successfully completed your challenge.'
   end
 end

@@ -2,9 +2,9 @@
 
 require 'artii'
 
-module GUI
+module Gui
   # this function is to give user option of what they want to do
-  def display_option1
+  def self.display_option1
     rows = []
     rows << ['1. I\'m up for a sudoku challenge']
     rows << ['2. Solve a sudoku from a csv file']
@@ -19,7 +19,7 @@ module GUI
 
   # This function is when user opt in to play
   # It allows user to input values into the cells
-  def cell_input_display
+  def self.cell_input_display
     rows = []
     rows << ['To enter a value for a cell follow the format. (row col value)']
     rows << ['E.g. to enter the value of 9 to the cell on row 6 and column 5, you enter: 6 5 9']
@@ -33,7 +33,7 @@ module GUI
 
   # When a game has been successfully attempted
   # User will get to see congratulation message
-  def congratulate
+  def self.congratulate
     a = Artii::Base.new font: 'slant'
     puts a.asciify('Congratulation!!')
   end
