@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Counter
   attr_accessor :count
 
@@ -26,7 +28,7 @@ class Counter
 end
 
 c = Counter.new(1)
-for i in (1..10)
+(1..10).each do |_i|
   plus_minus_alternate(Random.randit)
 end
 
