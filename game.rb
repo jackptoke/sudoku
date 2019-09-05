@@ -178,8 +178,10 @@ def user_interface
 
   until go_play != true
     # puts "I'm here!!"
+    
     input = Gui.display_option1
     if input == '1'
+      puts `clear`
       play
       progress += 1
     elsif input == '2'
@@ -198,11 +200,12 @@ def user_interface
 end
 
 def play
-  files = ['sudoku1.csv', 'sudoku2.csv']
-  progress = Random.rand(0..(files.size - 1)) # keeping track of the game
+  files = ['sudoku1.csv', 'sudoku2.csv', 'sudoku3.csv']
+
+  file = Gui.difficulty_level-1 #Random.rand(0..(files.size - 1)) # keeping track of the game
 
   # play game
-  sudoku_datas = FileManipulator.load_sudoku_from_file(files[progress])
+  sudoku_datas = FileManipulator.load_sudoku_from_file(files[file])
   sudoku_cells = prepare_sudoku_cells(sudoku_datas)
 
   solution = solve_a_sudoku(sudoku_datas)
@@ -214,13 +217,13 @@ def play
 
   until solved(sudoku_cells)
     # puts `clear`
-    display_sudoku(sudoku_cells, "Sudoku Master Challenge ##{progress + 1}")
+    display_sudoku(sudoku_cells, "Sudoku Master Challenge ##{file + 1}")
     input_values = Gui.cell_input_display # gets.strip.split(' ').map {|val| val.to_i}
     if !(!input_values.grep_v(1..9).empty? || input_values.size != 3)
 
       sudoku_cells[input_values[0] - 1][input_values[1] - 1].value = input_values[-1].to_i
     elsif input_values.count(0) == 3
-      display_sudoku(solution, "Solution to Challenge ##{progress + 1}")
+      display_sudoku(solution, "Solution to Challenge ##{file + 1}")
       break
     else
       puts "You've entered some invalid datas.  Try again."
@@ -255,6 +258,7 @@ input_array, *the_rest = ARGV
 if input_array.nil?
   # user_interface
   # puts "I'm here"
+  
   user_interface
 elsif input_array.downcase == 'play'
   # play
