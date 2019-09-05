@@ -1,7 +1,7 @@
 require 'artii'
 
 module GUI
-
+  #this function is to give user option of what they want to do
   def display_option1
     rows = []
     rows << ['1. I\'m up for a sudoku challenge']
@@ -15,6 +15,8 @@ module GUI
     return input
   end
 
+  #This function is when user opt in to play
+  #It allows user to input values into the cells
   def cell_input_display
     rows = []
     rows << ["To enter a value for a cell follow the format. (row col value)"]
@@ -27,6 +29,8 @@ module GUI
     return input_values
   end
   
+  #When a game has been successfully attempted
+  #User will get to see congratulation message
   def congratulate
     a = Artii::Base.new :font => 'slant'
     puts a.asciify('Congratulation!!')

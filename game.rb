@@ -128,7 +128,10 @@ def get_focus_cells(sudoku_cells)
 
 end
 
-#
+#Look for two or three cells in the same row, column or subgrid
+#that have exactly the same values in their potential value lists
+#if such cells are found, remove those values in all other cells 
+#that are not one of those cells
 def double_or_triple_whammer(sudoku_cells)
 
 end
