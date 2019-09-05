@@ -125,7 +125,11 @@ end
 #get a list of all the sudoku cells that require attention
 #they are to be shed as their values changes
 def get_focus_cells(sudoku_cells)
+  #look through the grid and put into the array
+  #all the cells that still need attention
 
+  #this method could possible implemented at the start
+  #to reduce unnecessary check and improve performance
 end
 
 #Look for two or three cells in the same row, column or subgrid
@@ -133,7 +137,12 @@ end
 #if such cells are found, remove those values in all other cells 
 #that are not one of those cells
 def double_or_triple_whammer(sudoku_cells)
-
+  #1. obtain the lists of cells that still need a value
+  #2. for each cell in the list look for other cells
+  #   which are in the same row, column or subgrid
+  #   that has the same potential values
+  #3. if such cells are found, remove from other 
+  #   cells all those values from them
 end
 
 def prepare_sudoku_cells(sudoku_datas)
@@ -177,7 +186,7 @@ end
 
 def play
   files = ['sudoku1.csv', 'sudoku2.csv']
-  progress = 0  #keeping track of the game
+  progress = Random.rand(0..(files.size-1))  #keeping track of the game
 
   #play game
   sudoku_datas = FileManipulator.load_sudoku_from_file(files[progress])
@@ -241,3 +250,7 @@ elsif input_array.downcase == "solve"
   end
 end
 
+class Game
+
+
+end
