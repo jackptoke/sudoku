@@ -1,5 +1,5 @@
 Programmer: Jack Toke
-Github link: 
+Github link: [git@github.com:jackptoke/sudoku.git](https://github.com/jackptoke/sudoku)
 
 #Sudoku Master
 <img src="images/sudoku.png"
