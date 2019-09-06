@@ -127,6 +127,7 @@ def solve_a_sudoku(sudoku_datas)
   until solved(sudoku_cells) || counter > 1000 #
     shed_potential_value_list(sudoku_cells)
     update_cells(sudoku_cells)
+    # double_whammer(sudoku_cells)
     counter += 1
   end
   if (counter > 1000)
@@ -137,10 +138,19 @@ end
 
 # get a list of all the sudoku cells that require attention
 # they are to be shed as their values changes
-def get_focus_cells(sudoku_cells)
+def get_working_list(sudoku_cells)
   # look through the grid and put into the array
   # all the cells that still need attention
-
+  working_list = []
+  sudoku_cells.each do |row|
+    row.each do |cell|
+      if cell.value.zero? 
+        working_list << cell
+        # print cell.value.to_s + ' '
+      end
+    end
+  end
+  return working_list
   # this method could possible implemented at the start
   # to reduce unnecessary check and improve performance
 end
@@ -149,13 +159,149 @@ end
 # that have exactly the same values in their potential value lists
 # if such cells are found, remove those values in all other cells
 # that are not one of those cells
-def double_or_triple_whammer(sudoku_cells)
+def double_whammer(sudoku_cells)
+
   # 1. obtain the lists of cells that still need a value
   # 2. for each cell in the list look for other cells
   #   which are in the same row, column or subgrid
   #   that has the same potential values
   # 3. if such cells are found, remove from other
   #   cells all those values from them
+  working_list = get_working_list(sudoku_cells)
+
+  #Those that are of the same row/column/subgrid
+  #check if any of them has the same potential values
+  working_list.each do |cell_a|
+    check_list = working_list.find_all do |cell_b| 
+      !cell_a.eql?(cell_b) && (cell_a.row == cell_b.row || cell_a.column == cell_b.column || cell_a.same_subgrid?(cell_b))
+    end
+    
+    check_list.each do |cell|
+      if cell_a.same_potential?(cell)
+        #if the match is found on the same row
+        if cell_a.row == cell.row
+          sudoku_cells[cell_a.row].each do |x|
+            if x.value.zero? && !x.eql?(cell_a) && !x.eql?(cell)
+              cell_a.potential_value_stack.each {|v| x.potential_value_stack.delete(x)}
+            end
+          end
+        elsif cell_a.column == cell.column
+          i = 0
+          until i >= sudoku_cells.size do
+            cell_a.potential_value_stack.each do |v|
+              if !sudoku_cells[i][cell_a.column].eql?(cell_a) && !sudoku_cells[i][cell_a.column].eql?(cell)
+                sudoku_cells[i][cell_a.column].potential_value_stack.delete(v)
+              end
+            end
+            i += 1
+          end
+        elsif cell_a.same_subgrid?(cell)
+          cell_a.block_family.each do |indexes|
+            if !sudoku_cells[indexes[0]][indexes[1]].eql?(cell_a) && !sudoku_cells[indexes[0][1]].eql?(cell)
+              cell_a.potential_value_stack.each do |v|
+                sudoku_cells[indexes[0]][indexes[1]].potential_value_stack.delete(v)
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
+  # working_list.each do |cell|
+  #   puts "[#{cell.row}, #{cell.column}]"
+  # end
+  # puts "Working list: #{working_list.size}"
+  # binding.pry
+end
+
+#this function is just created to tell the new algorithm
+def temp_test(sudoku_datas)
+  sudoku_cells = prepare_sudoku_cells(sudoku_datas)
+  # display_sudoku(sudoku_cells, "Sudoku to solve")
+  # build the potential list of values for each cell
+  build_potential_value_list(sudoku_cells)
+  update_cells(sudoku_cells) # update the value of each cell
+  counter = 0
+  # continue to the try to solve
+  # if the counter goes beyond a million
+  # it's probably a bad sudoku
+ 
+  display_sudoku(sudoku_cells, "Test")
+  shed_potential_value_list(sudoku_cells)
+  
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+  double_whammer(sudoku_cells)
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+  double_whammer(sudoku_cells)
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+  double_whammer(sudoku_cells)
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+  double_whammer(sudoku_cells)
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+  double_whammer(sudoku_cells)
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+  double_whammer(sudoku_cells)
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+  double_whammer(sudoku_cells)
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+  double_whammer(sudoku_cells)
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+  double_whammer(sudoku_cells)
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+  double_whammer(sudoku_cells)
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+  double_whammer(sudoku_cells)
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+  double_whammer(sudoku_cells)
+  update_cells(sudoku_cells)
+  display_sudoku(sudoku_cells, "Test")
+  
 end
 
 def prepare_sudoku_cells(sudoku_datas)
@@ -175,13 +321,13 @@ def user_interface
   # files = ['sudoku1.csv', 'sudoku2.csv']
   # batch_file = 'easy-sudokus.csv'
   progress = 0 # keeping track of the game
-
+  puts `clear`
   until go_play != true
     # puts "I'm here!!"
     
     input = Gui.display_option1
     if input == '1'
-      puts `clear`
+     
       play
       progress += 1
     elsif input == '2'
@@ -241,8 +387,9 @@ def solve(filename)
     cell_values2 = FileManipulator.load_sudoku_from_file(filename)
     # print out the solution
     result = solve_a_sudoku(cell_values2)
-    puts `clear`
+    
     if !result
+      puts "I can't solve this puzzle."
       return false
     end
     display_sudoku(result, 'Solved by Sudoku Master (programmed by Jack Toke)')
@@ -266,10 +413,10 @@ elsif input_array.downcase == 'play'
   play
 elsif input_array.downcase == 'solve'
   if !the_rest.empty?
-    puts "Let's solve: #{the_rest}"
+    # puts "Let's solve: #{the_rest}"
     if File.exist?(the_rest[0])
       # call the method to solve the sudoku
-      puts 'Call the Solve method here.'
+      # puts 'Call the Solve method here.'
       solve(the_rest[0])
     else
       puts "Sudoku Master couldn't find the file you've specified."
@@ -277,4 +424,10 @@ elsif input_array.downcase == 'solve'
   else
     puts 'A filename is expected. Eg. sudoku.csv'
   end
+elsif input_array.downcase == 'test'
+
+  # play game
+  sudoku_datas = FileManipulator.load_sudoku_from_file("easy-game-1.csv")
+  sudoku_cells = prepare_sudoku_cells(sudoku_datas)
+  temp_test(sudoku_datas)
 end

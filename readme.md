@@ -102,6 +102,8 @@ def double_or_triple_whammer(sudoku_cells)
   #   cells all those values from them
 end
 ```
+###Strategy 3
+If a number already appears on two sub-grids on the same row or column, then that number will appear on the remaining row/column that doesn't have the number, provided that the number is in the potential value list of a remaining cell but not the other or it's the only available slot.
 
 #UI Design
 ##Key Features
