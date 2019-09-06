@@ -3,7 +3,7 @@ Github link: [git@github.com:jackptoke/sudoku.git](https://github.com/jackptoke/
 
 #Sudoku Master
 <img src="images/sudoku.png"
-     alt="Markdown Monster icon"
+     alt="Sudoku Master"
      style="width: 150px;" />
 
 #Installation
@@ -34,7 +34,7 @@ ruby game.rb
 ##The Background of Sudoku
 Sudoku is a number puzzle.  According the best source of knowledge, *"Wikipedia"*, it was first appeared in a French newspaper in 1979.
 <img src="images/sudoku.jpg"
-     alt="Markdown Monster icon"
+     alt="Sudoku Master"
      style="width: 250px;" />
 But it only became mainstream in 1986 by the Japanese puzzle company Nikoli, under the name, Sudoku, meaning **"single number"**.
 
@@ -42,53 +42,53 @@ The puzzle has **9x9** grid with digits so that each column, each row and each o
 
 #Objective of Sudoku Master
 <img src="./images/first1-screen.jpg"
-     alt="Markdown Monster icon"
+     alt="Sudoku Master"
      style="width: 350px;" />
 Sudoku Master is a simple app created to solve any sudoku.  It also allows user to have fun playing it as well.
 
 ###Play a game
 Once you've chosen to have a game by keying ***1***, the program will take you to the following screen, allowing you to choose the level of difficulty - _easy, intermediate and expert_.
 <img src="./images/play-option-screen.jpg"
-     alt="Markdown Monster icon"
+     alt="Sudoku Master"
      style="width: 350px;" />
 After you choose the level of difficulty, it take you to the third screen, allowing you to enter the value of the cells.  The valid syntax for the values is: *ROW* space *COLUMN* space *VALUE*.  Eg. 1 2 5, representing the 1st row, 2nd column and the value is 5.
 >1 2 5
 <img src="./images/play-screen.jpg"
-     alt="Markdown Monster icon"
+     alt="Sudoku Master"
      style="width: 350px;" />
 The game will only stop when you have successfully attempted the puzzle.  But if you desire to give up half-way, you can just type _0 0 0_  seperated by a space.  It will show you the solution to the puzzle after that.
 >0 0 0
 <img src="./images/solution-screen.jpg"
-     alt="Markdown Monster icon"
+     alt="Sudoku Master"
      style="width: 350px;" />
 
 ###Solve a sudoku puzzle from a given file name.
 If you desire to just use the app to solve any sudoku puzzle, you could opt for a 2nd option.  It will ask you for a filename.  
 <img src="./images/solve-screen.jpg"
-     alt="Markdown Monster icon"
+     alt="Sudoku Master"
      style="width: 350px;" />
 The file must be a csv or txt file, but in a _very specific_ format, as shown below.  It doesn't expect any other format.
 <img src="./images/game-data-format.jpg"
-     alt="Markdown Monster icon"
+     alt="Sudoku Master"
      style="width: 350px;" />
 If you've given it the correct file, it will attempt to solve it and display you the solution afteward.
 <img src="./images/sudoku-solution.jpg"
-     alt="Markdown Monster icon"
+     alt="Sudoku Master"
      style="width: 350px;" />
 ##Strategies
 There are three strategies that anyone could use to conquer any sudoku puzzles.  I'll briefly explain the strategy with the help of some images.
 ###Strategy #1
 **Step One**: Build up a list of potential values for each cell.
 <img src="./images/strategy1-1.jpg"
-     alt="Markdown Monster icon"
+     alt="Sudoku Master"
      style="width: 350px;" />
 **Step Two**: Iterate throught each cells that don't have a value already, and shed off their potential list of values, as the values are found in the same row, column or subgrid.
 <img src="./images/strategy1-2b.jpg"
-     alt="Markdown Monster icon"
+     alt="Sudoku Master"
      style="width: 350px;" />
 **Step Three**: Once you do that you will find that some cells will have their potential list of values drop down to one.  Update those values.
 <img src="./images/strategy1-3.jpg"
-     alt="Markdown Monster icon"
+     alt="Sudoku Master"
      style="width: 350px;" />
 **Step 4**: If the game is not solved, repeat 1-3.
  
@@ -160,11 +160,11 @@ end
 In order to solve a more advanced puzzle, the program will need to find two/three cells in the same row, column or subgrid that has the same potential values.  If such cells are found, all other cells in the same row, column or subgrid can remove those values in their potential values lists.
 **Step 1: Look for two cells in the same row, column or subgrid with exactly two potential values that are the same.
 <img src="./images/strategy2-2c.jpg"
-     alt="Markdown Monster icon"
+     alt="Sudoku Master"
      style="width: 350px;" />
 **Step 2:  Shed of those values in their respective row, column or subgrid.  Once you have done that, you'll see a few cells reduced the size of their potential value list to just one.
 <img src="./images/strategy2-3a.jpg"
-     alt="Markdown Monster icon"
+     alt="Sudoku Master"
      style="width: 350px;" />
 **Step 3:  Update those cells values and go back to strategy 1 and back to strategy 2.
 
@@ -186,20 +186,20 @@ end
 If a number already appears on two sub-grids on the same row or column, then that number will appear on the remaining row/column that doesn't have the number, provided that the number is in the potential value list of a remaining cell but not the other or it's the only available slot.
 **Step 1: Search for two cells in the different subgrids that are on the same row or column that has the same number.  
 <img src="./images/strategy3-a.jpg"
-     alt="Markdown Monster icon"
+     alt="Sudoku Master"
      style="width: 350px;" />
 **Step 2: Check if the other subgrid on the same row or column, cells that you can safely insert the number. If it doesn't go into conflict with any other existing cells, then make the change.
 **Step 3:  Go back to strategy 1, strategy and repeat the process.
 #GUI Flowchart
 <img src="./images/flowchart.jpg"
-     alt="Markdown Monster icon"
+     alt="Sudoku Master"
      style="width: 550px;" />
 
 ##Tool Used to help with the project
 ###Trellow:
 [Trello](https://trello.com/b/SPnuI36h/build-sudoku-terminal-app)
 <img src="./images/trello.jpg"
-     alt="Markdown Monster icon"
+     alt="Sudoku Master"
      style="width: 650px;" />
 ###Google Diagram:
 [GUI Flowchart](https://docs.google.com/drawings/d/1pRHW2w3wrARL9nAGgxlk_ODcHgAH5fsgAIxwANbcPj4/edit?usp=sharing)
