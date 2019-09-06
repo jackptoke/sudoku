@@ -1,10 +1,20 @@
-#Sudoku
+Programmer: Jack Toke
+Github link: 
+
+#Sudoku Master
 <img src="images/sudoku.png"
      alt="Markdown Monster icon"
-     style="float: left; margin-right: 10px;" />
-<br>
+     style="width: 150px;" />
+
+#Installation
+- Clone the repo
+
+- CD into the directory
+- Run the build shell
+- Run the following command
+
 ##Introduction
-Sudoku is a number puzzle.  According the best source of knowledge, Wikipedia, it was first appeared in a French newspaper in 1979.
+Sudoku is a number puzzle.  According the best source of knowledge, *"Wikipedia"*, it was first appeared in a French newspaper in 1979.
 <img src="images/sudoku.jpg"
      alt="Markdown Monster icon"
      style="float: left; margin-right: 10px;" />
@@ -12,8 +22,8 @@ But it only became mainstream in 1986 by the Japanese puzzle company Nikoli, und
 
 The puzzle has **9x9** grid with digits so that each column, each row and each of the 9 3x3 subgrids that compose the grid contains all the number from 1 to 9.  The setter provides a partially completed grid, which has only one solution.
 
-#Sudoku Master
-<img src="images/sudoku-master.jpg"
+#Objective of Sudoku Master
+<img src="./images/sudoku-master.jpg"
      alt="Markdown Monster icon"
      style="float: left; margin-right: 10px;" />
 I've setout to write a simple app to solve any sudoku.  But later on added the feature to let user to play it as well.  The algorithm is far from being completed, but I've taken the first step in making it.
@@ -109,11 +119,11 @@ If a number already appears on two sub-grids on the same row or column, then tha
 ##Key Features
 #
 
+
 #Conclusion
 The current version of the program can only solve easy Sudoku.  When strategy 2 is implemented I believe it could solve more sudoku.
 
 ##Future Improvement
 Once strategy 2 is implemented, I could give user the option to choose the level of difficulty.
 
-#Installation
 
